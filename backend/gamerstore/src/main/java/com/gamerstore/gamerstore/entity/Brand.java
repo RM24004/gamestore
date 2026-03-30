@@ -14,12 +14,14 @@ public class Brand {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_brand")
     private Long id;
 
-    @NotBlank(message = "Name is required")
+    @NotBlank(message = "Nombre es obligatorio")
     @Size(max = 100)
     private String name;
 
+    @NotBlank(message = "Descripción es obligatoria")
     @Size(max = 255)
     private String description;
 

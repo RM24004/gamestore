@@ -25,7 +25,10 @@ public class Product {
 
     @NotNull(message = "Stock is required")
     @Min(value = 0, message = "Stock cannot be negative")
-    private Integer stock_actual;
+    private Integer current_stock;
+
+    @Size(max = 255)
+    private String image_url;
 
     //Relaciones con otras entidades
     @ManyToOne

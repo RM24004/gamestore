@@ -11,7 +11,8 @@ import lombok.*;
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_category;//falta validar los datos no esta validado
+    @Column(name = "id_category")
+    private Long id;
     
     @Size(max = 100, message = "El nombre no puede superar los 100 caracteres")
     private String name;

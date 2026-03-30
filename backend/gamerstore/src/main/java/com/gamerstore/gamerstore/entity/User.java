@@ -15,26 +15,41 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_user;
+    @Column(name = "id_user")
+    private Long id;
 
     @NotBlank(message = "El nombre es obligatorio")
     @Size(max = 100)
+    @Column(nullable = false, length = 100)
     private String name;
 
     @NotBlank(message = "El email es obligatorio")
     @Email(message = "Formato de email invalido")
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
 
     @NotBlank(message = "El telefono es obligatorio")
     @Size(max = 20)
+    @Column(length = 20)
     private String phone;
 
-    @Size(min = 6, max = 10, message = "La contraseña debe tener entre 6 y 10 caracteres")
     @NotBlank(message = "La contraseña es obligatoria")
+    @Column(nullable = false)
     private String password;
 
-    @ManyToOne
-    @JoinColumn(name = "id_role", nullable = false) // Asegura que cada usuario tenga un rol asignado
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_role", nullable = false)
     private Role role;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        return id != null && id.equals(((User) o).getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

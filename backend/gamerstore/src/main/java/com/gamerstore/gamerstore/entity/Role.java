@@ -14,7 +14,8 @@ public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_role;
+    @Column(name = "id_role")
+    private Long id;
 
     @NotBlank(message = "El nombre es obligatorio")
     @Size(max = 50)

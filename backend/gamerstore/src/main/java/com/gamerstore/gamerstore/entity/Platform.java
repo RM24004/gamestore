@@ -14,6 +14,7 @@ public class Platform {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_platform")
     private Long id;
 
     @NotBlank(message = "Name is required")
