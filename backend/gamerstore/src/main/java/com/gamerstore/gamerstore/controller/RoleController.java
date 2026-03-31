@@ -37,5 +37,11 @@ public class RoleController {
     @PutMapping("/{id}")
     public RoleResponseDTO update(@PathVariable Long id, @Valid @RequestBody RoleRequestDTO dto) {
         return roleService.update(id, dto);
-    }                               
+    }   
+    
+    //Eliminar
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        roleService.delete(id);
+    }
 }

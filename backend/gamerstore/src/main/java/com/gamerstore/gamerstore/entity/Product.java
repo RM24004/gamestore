@@ -13,18 +13,19 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_product;
+    @Column(name = "id_product")
+    private Long id;
 
-    @NotBlank(message = "Name is required")
+    @NotBlank(message = "Nombre es requerido")
     @Size(max = 150)
     private String name;
 
-    @NotNull(message = "Price is required")
-    @Positive(message = "Price must be positive")
+    @NotNull(message = "Precio es requerido")
+    @Positive(message = "Precio debe ser positivo")
     private Double price;
 
-    @NotNull(message = "Stock is required")
-    @Min(value = 0, message = "Stock cannot be negative")
+    @NotNull(message = "Stock es requerido")
+    @Min(value = 0, message = "Stock no puede ser negativo")
     private Integer current_stock;
 
     @Size(max = 255)

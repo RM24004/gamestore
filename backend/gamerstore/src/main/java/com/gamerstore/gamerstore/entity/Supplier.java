@@ -13,7 +13,8 @@ public class Supplier {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_supplier;
+    @Column(name = "id_supplier")
+    private Long id;
 
     @NotBlank(message = "Name is required")
     @Size(max = 100)

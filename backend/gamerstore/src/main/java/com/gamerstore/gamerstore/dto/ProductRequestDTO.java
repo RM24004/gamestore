@@ -8,10 +8,8 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductDTO {
+public class ProductRequestDTO {
 
-        private Long id_product;
-        
         @NotBlank(message = "Nombre es requerido")
         @Size(max = 150)
         private String name;

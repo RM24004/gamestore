@@ -3,7 +3,6 @@ package com.gamerstore.gamerstore.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
-
 import java.time.LocalDate;
 
 @Entity
@@ -15,7 +14,8 @@ public class Exit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_exit;
+    @Column(name = "id_exit")
+    private Long id;
 
     @NotNull(message = "Exit date is required")
     private LocalDate exit_date;

@@ -15,26 +15,37 @@ public class Entry {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_entry;
+    @Column(name = "id_entry")
+    private Long id;
 
-    @NotNull(message = "Entry date is required")
+    @NotNull(message = "Fecha de entrada es requerida")
     private LocalDate entry_date;
 
-    @NotNull(message = "Quantity is required")
-    @Min(value = 1, message = "Quantity must be at least 1")
+    @NotNull(message = "La cantidad es requerida")
+    @Min(value = 1, message = "La cantidad debe ser al menos 1")
     private Integer quantity;
 
-    @NotNull(message = "Unit cost is required")
-    @Positive(message = "Unit cost must be positive")
+    @NotNull(message = "El costo unitario es requerido")
+    @Positive(message = "El costo unitario debe ser positivo")
     private Double unit_cost;
 
-    //Relaciones con otras entidades
-
-    @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false) // Asegura que cada entrada tenga un producto asignado
+    @ManyToOne(fetch = FetchType.LAZY) // Relación con Product para obtener el producto asociado a esta entrada
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false) // Asegura que cada entrada tenga un usuario asignado
+    @ManyToOne(fetch = FetchType.LAZY) // Relación con User para obtener el usuario que registró esta entrada
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @Override // Implementación de equals y hashCode basada en el ID para garantizar la correcta comparación de entidades
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Entry)) return false;
+        return id != null && id.equals(((Entry) o).getId());
+    }
+
+    @Override // El hashCode se basa en el ID para garantizar la consistencia con equals
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }
