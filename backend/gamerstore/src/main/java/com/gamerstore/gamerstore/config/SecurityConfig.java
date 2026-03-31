@@ -11,9 +11,9 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .anyRequest().permitAll()
+                .requestMatchers("/auth/**").permitAll() //rutas de autenticación sin protección
+                .anyRequest().authenticated() //todas las demás rutas requieren autenticación
             );
-
         return http.build();
     }
 }
