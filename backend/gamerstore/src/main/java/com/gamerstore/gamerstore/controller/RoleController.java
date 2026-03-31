@@ -2,6 +2,8 @@ package com.gamerstore.gamerstore.controller;
 import com.gamerstore.gamerstore.dto.RoleRequestDTO;
 import com.gamerstore.gamerstore.dto.RoleResponseDTO;
 import com.gamerstore.gamerstore.service.RoleService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -17,31 +19,36 @@ public class RoleController {
 
     //Obtener Todos los registros
     @GetMapping
-    public List<RoleResponseDTO> listAll() {
-        return roleService.listAll();
+    public ResponseEntity<List<RoleResponseDTO>> listAll() {
+        List<RoleResponseDTO> roles = roleService.listAll();
+        return new ResponseEntity<>(roles, HttpStatus.OK);
     }
 
     //Obtener por ID
     @GetMapping("/{id}")
-    public RoleResponseDTO getById(@PathVariable Long id) {
-        return roleService.findById(id);
+    public ResponseEntity<RoleResponseDTO> getById(@PathVariable Long id) {
+        RoleResponseDTO role = roleService.findById(id);
+        return new ResponseEntity<>(role, HttpStatus.OK);
     }
 
     //Crear
     @PostMapping
-    public RoleResponseDTO save(@Valid @RequestBody RoleRequestDTO dto) {
-        return roleService.save(dto);
+    public ResponseEntity<RoleResponseDTO> save(@Valid @RequestBody RoleRequestDTO dto) {
+        RoleResponseDTO savedRole = roleService.save(dto);
+        return new ResponseEntity<>(savedRole, HttpStatus.CREATED);
     }
 
     //Actualizar
     @PutMapping("/{id}")
-    public RoleResponseDTO update(@PathVariable Long id, @Valid @RequestBody RoleRequestDTO dto) {
-        return roleService.update(id, dto);
-    }   
+    public ResponseEntity<RoleResponseDTO> update(@PathVariable Long id, @Valid @RequestBody RoleRequestDTO dto) {
+        RoleResponseDTO updatedRole = roleService.update(id, dto);
+        return new ResponseEntity<>(updatedRole, HttpStatus.OK);
+    }
     
     //Eliminar
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         roleService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

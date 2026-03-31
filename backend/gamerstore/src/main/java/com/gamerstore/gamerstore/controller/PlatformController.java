@@ -3,6 +3,7 @@ import com.gamerstore.gamerstore.dto.PlatformRequestDTO;
 import com.gamerstore.gamerstore.dto.PlatformResponseDTO;
 import com.gamerstore.gamerstore.service.PlatformService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -17,51 +18,36 @@ public class PlatformController {
 
     //Obtener Todos los registros
     @GetMapping
-    public List<PlatformResponseDTO> listAll() {
-        return platformService.listAll();
+    public ResponseEntity<List<PlatformResponseDTO>> getAll() {
+        List<PlatformResponseDTO> platforms = platformService.listAll();
+        return new ResponseEntity<>(platforms, HttpStatus.OK);
     }
 
     //Obtener por ID
     @GetMapping("/{id}")
     public ResponseEntity<PlatformResponseDTO> getById(@PathVariable Long id) {
-        try {
-            PlatformResponseDTO dto = platformService.findById(id);
-            return ResponseEntity.ok(dto);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+        PlatformResponseDTO platform = platformService.findById(id);
+        return new ResponseEntity<>(platform, HttpStatus.OK);
     }
 
     //Crear
     @PostMapping
     public ResponseEntity<PlatformResponseDTO> save(@RequestBody PlatformRequestDTO dto) {
-        try {
-            PlatformResponseDTO savedDto = platformService.save(dto);
-            return ResponseEntity.ok(savedDto);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().build();
-        }
+        PlatformResponseDTO savedDto = platformService.save(dto);
+        return new ResponseEntity<>(savedDto, HttpStatus.CREATED);
     }
 
     //Actualizar
     @PutMapping("/{id}")
     public ResponseEntity<PlatformResponseDTO> update(@PathVariable Long id, @RequestBody PlatformRequestDTO dto) {
-        try {
-            PlatformResponseDTO updatedDto = platformService.update(id, dto);
-            return ResponseEntity.ok(updatedDto);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        } 
-    }  
-    //Eliminar
-        @DeleteMapping("/{id}")
-        public ResponseEntity<Void> delete(@PathVariable Long id) {
-            try {
-                platformService.delete(id);
-                return ResponseEntity.noContent().build();
-            } catch (RuntimeException e) {
-                return ResponseEntity.notFound().build();
-            }                                         
+        PlatformResponseDTO updatedDto = platformService.update(id, dto);
+        return new ResponseEntity<>(updatedDto, HttpStatus.OK);
+    }
     
-        }
+    //Eliminar
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        platformService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }

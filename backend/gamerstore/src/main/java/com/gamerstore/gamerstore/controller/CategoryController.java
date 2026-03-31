@@ -3,6 +3,8 @@ package com.gamerstore.gamerstore.controller;
 import com.gamerstore.gamerstore.dto.CategoryRequestDTO;
 import com.gamerstore.gamerstore.dto.CategoryResponseDTO;
 import com.gamerstore.gamerstore.service.CategoryService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -20,35 +22,38 @@ public class CategoryController {
     }
     //GET ALL
     @GetMapping
-    public List<CategoryResponseDTO> listAll() {
-        return categoryService.listAll();
+    public ResponseEntity<List<CategoryResponseDTO>> getAll() {
+        List<CategoryResponseDTO> categories = categoryService.listAll();
+        return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
     //GET BY ID
     @GetMapping("/{id}")
-    public CategoryResponseDTO getById(@PathVariable Long id) {
-        return categoryService.findById(id);
+    public ResponseEntity<CategoryResponseDTO> getById(@PathVariable Long id) {
+        CategoryResponseDTO category = categoryService.findById(id);
+        return new ResponseEntity<>(category, HttpStatus.OK);
     }
 
     //CREATE
     @PostMapping
-    public CategoryResponseDTO save(@Valid @RequestBody CategoryRequestDTO dto) {
-        return categoryService.save(dto);
+    public ResponseEntity<CategoryResponseDTO> save(@Valid @RequestBody CategoryRequestDTO dto) {
+        CategoryResponseDTO savedCategory = categoryService.save(dto);
+        return new ResponseEntity<>(savedCategory, HttpStatus.CREATED);
     }
 
     //UPDATE
     @PutMapping("/{id}")
-    public CategoryResponseDTO update(@PathVariable Long id, @Valid @RequestBody CategoryRequestDTO dto) {
-        return categoryService.update(id, dto);
+    public ResponseEntity<CategoryResponseDTO> update(@PathVariable Long id, @Valid @RequestBody CategoryRequestDTO dto) {
+        CategoryResponseDTO updatedCategory = categoryService.update(id, dto);
+        return new ResponseEntity<>(updatedCategory, HttpStatus.OK);
     }
 
     //DELETE
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         categoryService.delete(id);
+        return ResponseEntity.noContent().build();
     }
-
-   
 }
 
 

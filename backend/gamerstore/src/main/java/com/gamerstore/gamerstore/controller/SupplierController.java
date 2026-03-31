@@ -2,6 +2,8 @@ package com.gamerstore.gamerstore.controller;
 import com.gamerstore.gamerstore.dto.SupplierResponseDTO;
 import com.gamerstore.gamerstore.dto.SupplierRequestDTO;
 import com.gamerstore.gamerstore.service.SupplierService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -12,36 +14,42 @@ import java.util.List;
 
 public class SupplierController {
  private final SupplierService supplierService;
- public SupplierController(SupplierService supplierService) {
+    public SupplierController(SupplierService supplierService) {
         this.supplierService = supplierService;
     }
-//Obtener Todos los registros
+
+    //Obtener Todos los registros
     @GetMapping
-    public List<SupplierResponseDTO> listAll() {
-        return supplierService.listAll();
+    public ResponseEntity<List<SupplierResponseDTO>> listAll() {
+        List<SupplierResponseDTO> suppliers = supplierService.listAll();
+        return new ResponseEntity<>(suppliers, HttpStatus.OK);
     }
 
     //Obtener por ID
     @GetMapping("/{id}")
-    public SupplierResponseDTO getById(@PathVariable Long id) {
-        return supplierService.findById(id);
+    public ResponseEntity<SupplierResponseDTO> getById(@PathVariable Long id) {
+        SupplierResponseDTO supplier = supplierService.findById(id);
+        return new ResponseEntity<>(supplier, HttpStatus.OK);
     }
 
     //Crear
     @PostMapping
-    public SupplierResponseDTO save(@Valid @RequestBody SupplierRequestDTO dto) {
-        return supplierService.save(dto);
+    public ResponseEntity<SupplierResponseDTO> save(@Valid @RequestBody SupplierRequestDTO dto) {
+        SupplierResponseDTO savedSupplier = supplierService.save(dto);
+        return new ResponseEntity<>(savedSupplier, HttpStatus.CREATED);
     }
 
     //Actualizar
     @PutMapping("/{id}")
-    public SupplierResponseDTO update(@PathVariable Long id, @Valid @RequestBody SupplierRequestDTO dto) {
-        return supplierService.update(id, dto);
+    public ResponseEntity<SupplierResponseDTO> update(@PathVariable Long id, @Valid @RequestBody SupplierRequestDTO dto) {
+        SupplierResponseDTO updatedSupplier = supplierService.update(id, dto);
+        return new ResponseEntity<>(updatedSupplier, HttpStatus.OK);
     }
 
     //Eliminar
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         supplierService.delete(id);
-    }                   
+        return ResponseEntity.noContent().build();
+    }                  
 }
