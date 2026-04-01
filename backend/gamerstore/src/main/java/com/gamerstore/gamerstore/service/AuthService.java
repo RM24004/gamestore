@@ -4,13 +4,16 @@ import com.gamerstore.gamerstore.repository.UserRepository;
 import com.gamerstore.gamerstore.dto.AuthRequest;
 import com.gamerstore.gamerstore.dto.AuthResponse;
 import org.springframework.stereotype.Service;
+import com.gamerstore.gamerstore.config.JwtUtil;
 
 @Service
 public class AuthService {
     private final UserRepository userRepository;
+    private final JwtUtil jwtUtil;
 
-    public AuthService(UserRepository userRepository) {
+    public AuthService(UserRepository userRepository, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
+        this.jwtUtil = jwtUtil;
     }
 
     public AuthResponse authenticate(AuthRequest request) {
@@ -19,7 +22,7 @@ public class AuthService {
         if (!user.getPassword().equals(request.getPassword())) {
             throw new RuntimeException("Contraseña incorrecta");
         }
-        String faketoken = "token_provisional_para_" + user.getEmail();
-        return new AuthResponse(faketoken);
+        String token = jwtUtil.generateToken(user.getEmail());
+        return new AuthResponse(token);
     }
 }
