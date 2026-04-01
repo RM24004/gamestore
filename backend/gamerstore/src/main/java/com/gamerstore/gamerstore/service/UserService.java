@@ -7,7 +7,7 @@ import com.gamerstore.gamerstore.dto.RoleResponseDTO;
 import com.gamerstore.gamerstore.dto.UserRequestDTO;
 import com.gamerstore.gamerstore.dto.UserResponseDTO;
 
-
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,11 +16,13 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-
-    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
+    private final PasswordEncoder passwordEncoder;
+        
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-}
+        this.passwordEncoder = passwordEncoder;
+    }
    //Entidad a ResponseDTO
     private UserResponseDTO mapToResponseDTO(User user) {
         UserResponseDTO dto = new UserResponseDTO();
@@ -28,6 +30,7 @@ public class UserService {
         dto.setName(user.getName());
         dto.setEmail(user.getEmail());
         dto.setPhone(user.getPhone());
+        
 
         RoleResponseDTO roleDTO = new RoleResponseDTO();
         roleDTO.setId(user.getRole().getId());
@@ -43,8 +46,8 @@ public class UserService {
         user.setName(dto.getName());
         user.setEmail(dto.getEmail());
         user.setPhone(dto.getPhone());
-        user.setPassword(dto.getPassword());
-
+        user.setPassword(passwordEncoder.encode(dto.getPassword())); // Encriptar la contraseña antes de guardarla
+       
         Role role = roleRepository.findById(dto.getRoleId())
                 .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
         user.setRole(role);
