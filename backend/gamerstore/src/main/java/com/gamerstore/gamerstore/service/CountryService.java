@@ -49,14 +49,14 @@ public class CountryService {
     //Buscar por ID
     public CountryResponseDTO findById(Long id) {
         Country con = countryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Country not found"));
+                .orElseThrow(() -> new RuntimeException("Pais no encontrado"));
         return toDTO(con);
     }
 
     //Actualizar
     public CountryResponseDTO update(Long id, CountryRequestDTO dto) {
         Country con = countryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Country not found"));
+                .orElseThrow(() -> new RuntimeException("Pais no encontrado"));
 
         con.setName(dto.getName());
         con.setDescription(dto.getDescription());
@@ -67,7 +67,7 @@ public class CountryService {
     //Eliminar
     public void delete(Long id) {
         Country con = countryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Country not found"));
+                .orElseThrow(() -> new RuntimeException("Pais no encontrado"));
         countryRepository.delete(con);
     }
     

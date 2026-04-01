@@ -1,4 +1,5 @@
 package com.gamerstore.gamerstore.controller;
+import com.gamerstore.gamerstore.dto.ApiResponse;
 import com.gamerstore.gamerstore.dto.PlatformRequestDTO;
 import com.gamerstore.gamerstore.dto.PlatformResponseDTO;
 import com.gamerstore.gamerstore.service.PlatformService;
@@ -32,22 +33,22 @@ public class PlatformController {
 
     //Crear
     @PostMapping
-    public ResponseEntity<PlatformResponseDTO> save(@RequestBody PlatformRequestDTO dto) {
-        PlatformResponseDTO savedDto = platformService.save(dto);
-        return new ResponseEntity<>(savedDto, HttpStatus.CREATED);
+    public ResponseEntity<ApiResponse> save(@RequestBody PlatformRequestDTO dto) {
+        platformService.save(dto);
+        return ResponseEntity.ok(new ApiResponse("Plataforma creada con exito"));
     }
 
     //Actualizar
     @PutMapping("/{id}")
-    public ResponseEntity<PlatformResponseDTO> update(@PathVariable Long id, @RequestBody PlatformRequestDTO dto) {
-        PlatformResponseDTO updatedDto = platformService.update(id, dto);
-        return new ResponseEntity<>(updatedDto, HttpStatus.OK);
+    public ResponseEntity<ApiResponse> update(@PathVariable Long id, @RequestBody PlatformRequestDTO dto) {
+        platformService.update(id, dto);
+        return ResponseEntity.ok(new ApiResponse("Plataforma actualizada con exito"));
     }
     
     //Eliminar
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse> delete(@PathVariable Long id) {
         platformService.delete(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(new ApiResponse("Plataforma eliminada con exito"));
     }
 }

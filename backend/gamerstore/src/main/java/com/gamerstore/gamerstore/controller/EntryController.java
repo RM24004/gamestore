@@ -1,5 +1,6 @@
 package com.gamerstore.gamerstore.controller;
 import com.gamerstore.gamerstore.dto.EntryResponseDTO;
+import com.gamerstore.gamerstore.dto.ApiResponse;
 import com.gamerstore.gamerstore.dto.EntryRequestDTO;
 import com.gamerstore.gamerstore.service.EntryService;
 import org.springframework.http.ResponseEntity;
@@ -32,9 +33,9 @@ public class EntryController {
 
     //Crear
     @PostMapping
-    public ResponseEntity<EntryResponseDTO> save(@Valid @RequestBody EntryRequestDTO dto) {
-        EntryResponseDTO savedEntry = entryService.createEntry(dto);
-        return new ResponseEntity<>(savedEntry, HttpStatus.CREATED);
+    public ResponseEntity<ApiResponse> save(@Valid @RequestBody EntryRequestDTO dto) {
+        entryService.createEntry(dto);
+        return ResponseEntity.ok(new ApiResponse("Entrada creada con exito"));
     }
 
     //Actualizar

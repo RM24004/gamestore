@@ -1,5 +1,6 @@
 package com.gamerstore.gamerstore.controller;
 import com.gamerstore.gamerstore.dto.SupplierResponseDTO;
+import com.gamerstore.gamerstore.dto.ApiResponse;
 import com.gamerstore.gamerstore.dto.SupplierRequestDTO;
 import com.gamerstore.gamerstore.service.SupplierService;
 import org.springframework.http.ResponseEntity;
@@ -34,22 +35,22 @@ public class SupplierController {
 
     //Crear
     @PostMapping
-    public ResponseEntity<SupplierResponseDTO> save(@Valid @RequestBody SupplierRequestDTO dto) {
-        SupplierResponseDTO savedSupplier = supplierService.save(dto);
-        return new ResponseEntity<>(savedSupplier, HttpStatus.CREATED);
+    public ResponseEntity<ApiResponse> save(@Valid @RequestBody SupplierRequestDTO dto) {
+        supplierService.save(dto);
+        return ResponseEntity.ok(new ApiResponse("Proveedor creado con exito"));
     }
 
     //Actualizar
     @PutMapping("/{id}")
-    public ResponseEntity<SupplierResponseDTO> update(@PathVariable Long id, @Valid @RequestBody SupplierRequestDTO dto) {
-        SupplierResponseDTO updatedSupplier = supplierService.update(id, dto);
-        return new ResponseEntity<>(updatedSupplier, HttpStatus.OK);
+    public ResponseEntity<ApiResponse> update(@PathVariable Long id, @Valid @RequestBody SupplierRequestDTO dto) {
+        supplierService.update(id, dto);
+        return ResponseEntity.ok(new ApiResponse("Proveedor actualizado con exito"));
     }
 
     //Eliminar
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse> delete(@PathVariable Long id) {
         supplierService.delete(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(new ApiResponse("Proveedor eliminado con exito"));
     }                  
 }

@@ -50,12 +50,12 @@ private Entry toEntity(EntryRequestDTO dto) {
 
     //Relacion obligatoria con Product porque no se puede crear una entrada sin un producto asociado
     Product product = productRepository.findById(dto.getId_product())
-        .orElseThrow(() -> new RuntimeException("Product not found"));
+        .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
     entry.setProduct(product);
 
     //Relacion obligatoria con User porque no se puede crear una entrada sin un usuario asociado
     User user = userRepository.findById(dto.getId_user())
-        .orElseThrow(() -> new RuntimeException("User not found"));
+        .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
     entry.setUser(user);
 
     return entry;
@@ -84,7 +84,7 @@ private Entry toEntity(EntryRequestDTO dto) {
     //Listar por ID
     public EntryResponseDTO findEntryById(Long id) {
         Entry entry = entryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Entry not found"));
+                .orElseThrow(() -> new RuntimeException("Entrada no econtrada"));
         return toDTO(entry);
     }
 

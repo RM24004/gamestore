@@ -1,5 +1,6 @@
 package com.gamerstore.gamerstore.controller;
 import com.gamerstore.gamerstore.dto.ProductResponseDTO;
+import com.gamerstore.gamerstore.dto.ApiResponse;
 import com.gamerstore.gamerstore.dto.ProductRequestDTO;
 import com.gamerstore.gamerstore.service.ProductService;
 import org.springframework.http.ResponseEntity;
@@ -32,20 +33,20 @@ public class ProductController {
     }
     //Crear
     @PostMapping
-    public ResponseEntity<ProductResponseDTO> save(@Valid @RequestBody ProductRequestDTO dto) {
-        ProductResponseDTO savedProduct = productService.save(dto);
-        return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
+    public ResponseEntity<ApiResponse> save(@Valid @RequestBody ProductRequestDTO dto) {
+        productService.save(dto);
+        return ResponseEntity.ok(new ApiResponse("Producto creado con exito"));
     }
     //Actualizar
     @PutMapping("/{id}")
-    public ResponseEntity<ProductResponseDTO> update(@PathVariable Long id, @Valid @RequestBody ProductRequestDTO dto) {
-        ProductResponseDTO updatedProduct = productService.update(id, dto);
-        return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
+    public ResponseEntity<ApiResponse> update(@PathVariable Long id, @Valid @RequestBody ProductRequestDTO dto) {
+        productService.update(id, dto);
+        return ResponseEntity.ok(new ApiResponse("Producto actualizado con exito"));
     }
     //Eliminar
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse> delete(@PathVariable Long id) {
         productService.delete(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(new ApiResponse("Producto eliminado correctamente"));
     }
 }

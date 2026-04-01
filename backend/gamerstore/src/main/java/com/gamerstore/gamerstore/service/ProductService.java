@@ -77,25 +77,25 @@ public class ProductService {
 
         if (dto.getBrand_id() != null) {
             Brand brand = brandRepository.findById(dto.getBrand_id())
-                    .orElseThrow(() -> new RuntimeException("Brand not found"));
+                    .orElseThrow(() -> new RuntimeException("Marca no encontrada"));
             prod.setBrand(brand);
         }
 
         if (dto.getCategory_id() != null) {
             Category category = categoryRepository.findById(dto.getCategory_id())
-                    .orElseThrow(() -> new RuntimeException("Category not found"));
+                    .orElseThrow(() -> new RuntimeException("Categoria no encontrada"));
             prod.setCategory(category);
         }
 
         if (dto.getPlatform_id() != null) {
             Platform platform = platformRepository.findById(dto.getPlatform_id())
-                    .orElseThrow(() -> new RuntimeException("Platform not found"));
+                    .orElseThrow(() -> new RuntimeException("Plataforma no encontrada"));
             prod.setPlatform(platform);
         }
 
         if (dto.getSupplier_id() != null) {
             Supplier supplier = supplierRepository.findById(dto.getSupplier_id())
-                    .orElseThrow(() -> new RuntimeException("Supplier not found"));
+                    .orElseThrow(() -> new RuntimeException("Proveedor no encontrado"));
             prod.setSupplier(supplier);
         }
     }
@@ -129,14 +129,14 @@ public class ProductService {
     //Buscar por ID
     public ProductResponseDTO findById(Long id) {
         Product prod = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
         return toDTO(prod);
     }
 
     //Actualizar
     public ProductResponseDTO update(Long id, ProductRequestDTO dto) {
         Product prod = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
         prod.setName(dto.getName());
         prod.setPrice(dto.getPrice());
@@ -150,7 +150,7 @@ public class ProductService {
     //Eliminar
     public void delete(Long id) {
         Product prod = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
         productRepository.delete(prod);
     }
 }

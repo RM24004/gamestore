@@ -1,4 +1,5 @@
 package com.gamerstore.gamerstore.controller;
+import com.gamerstore.gamerstore.dto.ApiResponse;
 import com.gamerstore.gamerstore.dto.ReasonRequestDTO;
 import com.gamerstore.gamerstore.dto.ReasonResponseDTO;
 import com.gamerstore.gamerstore.service.ReasonService;
@@ -34,22 +35,22 @@ public class ReasonController {
 
     //Crear
     @PostMapping
-    public ResponseEntity<ReasonResponseDTO> save(@Valid @RequestBody ReasonRequestDTO dto) {
-        ReasonResponseDTO savedReason = reasonService.save(dto);
-        return new ResponseEntity<>(savedReason, HttpStatus.CREATED);
+    public ResponseEntity<ApiResponse> save(@Valid @RequestBody ReasonRequestDTO dto) {
+        reasonService.save(dto);
+        return ResponseEntity.ok(new ApiResponse("Motivo creado con exito"));
     }
     
     //Actualizar
     @PutMapping("/{id}")
-    public ResponseEntity<ReasonResponseDTO> update(@PathVariable Long id, @Valid @RequestBody ReasonRequestDTO dto) {
-        ReasonResponseDTO updatedReason = reasonService.update(id, dto);
-        return new ResponseEntity<>(updatedReason, HttpStatus.OK);
+    public ResponseEntity<ApiResponse> update(@PathVariable Long id, @Valid @RequestBody ReasonRequestDTO dto) {
+        reasonService.update(id, dto);
+        return ResponseEntity.ok(new ApiResponse("Motivo actualizado con exito"));
     }   
 
     //Eliminar
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse> delete(@PathVariable Long id) {
         reasonService.delete(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(new ApiResponse("Motivo eliminado con exito"));
     }   
 }

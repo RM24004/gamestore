@@ -1,4 +1,5 @@
 package com.gamerstore.gamerstore.controller;
+import com.gamerstore.gamerstore.dto.ApiResponse;
 import com.gamerstore.gamerstore.dto.RoleRequestDTO;
 import com.gamerstore.gamerstore.dto.RoleResponseDTO;
 import com.gamerstore.gamerstore.service.RoleService;
@@ -33,22 +34,22 @@ public class RoleController {
 
     //Crear
     @PostMapping
-    public ResponseEntity<RoleResponseDTO> save(@Valid @RequestBody RoleRequestDTO dto) {
-        RoleResponseDTO savedRole = roleService.save(dto);
-        return new ResponseEntity<>(savedRole, HttpStatus.CREATED);
+    public ResponseEntity<ApiResponse> save(@Valid @RequestBody RoleRequestDTO dto) {
+        roleService.save(dto);
+        return ResponseEntity.ok(new ApiResponse("Rol creado con exito"));
     }
 
     //Actualizar
     @PutMapping("/{id}")
-    public ResponseEntity<RoleResponseDTO> update(@PathVariable Long id, @Valid @RequestBody RoleRequestDTO dto) {
-        RoleResponseDTO updatedRole = roleService.update(id, dto);
-        return new ResponseEntity<>(updatedRole, HttpStatus.OK);
+    public ResponseEntity<ApiResponse> update(@PathVariable Long id, @Valid @RequestBody RoleRequestDTO dto) {
+        roleService.update(id, dto);
+        return ResponseEntity.ok(new ApiResponse("Rol actualizado con exito"));
     }
     
     //Eliminar
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse> delete(@PathVariable Long id) {
         roleService.delete(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(new ApiResponse("Rol eliminado con exito"));
     }
 }

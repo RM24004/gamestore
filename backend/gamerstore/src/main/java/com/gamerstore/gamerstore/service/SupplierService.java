@@ -51,7 +51,7 @@ public class SupplierService {
 
         if (dto.getId_country() != null) {
             Country country = countryRepository.findById(dto.getId_country())
-                    .orElseThrow(() -> new RuntimeException("Country not found"));
+                    .orElseThrow(() -> new RuntimeException("Pais no encontrado"));
             sup.setCountry(country);
         }
 
@@ -76,14 +76,14 @@ public class SupplierService {
     //Buscar por ID
     public SupplierResponseDTO findById(Long id) {
         Supplier sup = supplierRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Supplier not found"));
+                .orElseThrow(() -> new RuntimeException("Proveedor no encontrado"));
         return toDTO(sup);
     }
 
     //Actualizar
     public SupplierResponseDTO update(Long id, SupplierRequestDTO dto) {
         Supplier sup = supplierRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Supplier not found"));
+                .orElseThrow(() -> new RuntimeException("Proveedor no encontrado"));
 
         sup.setName(dto.getName());
         sup.setContact(dto.getContact());
@@ -97,7 +97,7 @@ public class SupplierService {
     //Eliminar
     public void delete(Long id) {
         Supplier sup = supplierRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Supplier not found"));
+                .orElseThrow(() -> new RuntimeException("Proveedor no encontrado"));
         supplierRepository.delete(sup);
     }
 }

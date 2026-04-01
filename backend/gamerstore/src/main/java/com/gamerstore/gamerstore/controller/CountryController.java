@@ -1,4 +1,5 @@
 package com.gamerstore.gamerstore.controller;
+import com.gamerstore.gamerstore.dto.ApiResponse;
 import com.gamerstore.gamerstore.dto.CountryRequestDTO;
 import com.gamerstore.gamerstore.service.CountryService;
 import com.gamerstore.gamerstore.dto.CountryResponseDTO;
@@ -32,22 +33,22 @@ public class CountryController {
 
     //Crear
     @PostMapping
-    public ResponseEntity<CountryResponseDTO> save(@Valid @RequestBody CountryRequestDTO dto) {
-        CountryResponseDTO savedCountry = countryService.save(dto);
-        return new ResponseEntity<>(savedCountry, HttpStatus.CREATED);
+    public ResponseEntity<ApiResponse> save(@Valid @RequestBody CountryRequestDTO dto) {
+        countryService.save(dto);
+        return ResponseEntity.ok(new ApiResponse("Pais creado con exito"));
     }
 
     //Actualizar
     @PutMapping("/{id}")
-    public ResponseEntity<CountryResponseDTO> update(@PathVariable Long id, @Valid @RequestBody CountryRequestDTO dto) {
-        CountryResponseDTO updatedCountry = countryService.update(id, dto);
-        return new ResponseEntity<>(updatedCountry, HttpStatus.OK);
+    public ResponseEntity<ApiResponse> update(@PathVariable Long id, @Valid @RequestBody CountryRequestDTO dto) {
+        countryService.update(id, dto);
+        return ResponseEntity.ok(new ApiResponse("Pais actualizado con exito"));
     }
     
     //Eliminar
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse> delete(@PathVariable Long id) {
         countryService.delete(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(new ApiResponse("Pais eliminado con exito"));
     }
 }

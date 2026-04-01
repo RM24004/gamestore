@@ -48,14 +48,14 @@ public class BrandService {
     //Buscar por ID
     public BrandResponseDTO findById(Long id) {
         Brand bra = brandRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Brand not found"));
+                .orElseThrow(() -> new RuntimeException("Marca no encontrada"));
         return toDTO(bra);
     }
 
     //Actualizar
     public BrandResponseDTO update(Long id, BrandRequestDTO dto) {
         Brand bra = brandRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Brand not found"));
+                .orElseThrow(() -> new RuntimeException("Marca no encontrada"));
 
         bra.setName(dto.getName());
         bra.setDescription(dto.getDescription());
@@ -66,7 +66,7 @@ public class BrandService {
     //Eliminar
     public void delete(Long id) {
         Brand bra = brandRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Brand not found"));
+                .orElseThrow(() -> new RuntimeException("Marca no encontrada"));
         brandRepository.delete(bra);
     }
 }

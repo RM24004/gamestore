@@ -47,14 +47,14 @@ public class RoleService {
     //Buscar por ID
     public RoleResponseDTO findById(Long id) {
         Role rol = roleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Role not found"));
+                .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
         return toDTO(rol);
     }
 
     //Actualizar
     public RoleResponseDTO update(Long id, RoleRequestDTO dto) {
         Role rol = roleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Role not found"));
+                .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
 
         rol.setName(dto.getName());
         rol.setDescription(dto.getDescription());
@@ -65,7 +65,7 @@ public class RoleService {
     //Eliminar
     public void delete(Long id) {
         Role rol = roleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Role not found"));
+                .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
         roleRepository.delete(rol);
     }
 }

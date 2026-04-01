@@ -1,5 +1,6 @@
 package com.gamerstore.gamerstore.controller;
 import com.gamerstore.gamerstore.dto.UserResponseDTO;
+import com.gamerstore.gamerstore.dto.ApiResponse;
 import com.gamerstore.gamerstore.dto.UserRequestDTO;
 import com.gamerstore.gamerstore.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -34,22 +35,22 @@ public class UserController {
 
     //Crear
     @PostMapping
-    public ResponseEntity<UserResponseDTO> save(@Valid @RequestBody UserRequestDTO dto) {
-        UserResponseDTO savedUser = userService.createUser(dto);
-        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+    public ResponseEntity<ApiResponse> save(@Valid @RequestBody UserRequestDTO dto) {
+        userService.createUser(dto);
+        return ResponseEntity.ok(new ApiResponse("Usuario creado con exito"));
     }
 
     //Actualizar
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> update(@PathVariable Long id, @Valid @RequestBody UserRequestDTO dto) {
-        UserResponseDTO updatedUser = userService.updateUser(id, dto);
-        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+    public ResponseEntity<ApiResponse> update(@PathVariable Long id, @Valid @RequestBody UserRequestDTO dto) {
+        userService.updateUser(id, dto);
+        return ResponseEntity.ok(new ApiResponse("Usuario actualizado con exito"));
     }
 
     //Eliminar
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse> delete(@PathVariable Long id) {
         userService.deleteUser(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(new ApiResponse("Usuario eliminado con exito"));
     }
 }

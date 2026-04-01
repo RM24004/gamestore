@@ -55,17 +55,17 @@ public class ExitService {
         
         //Relacion obligatoria con Product porque no se puede crear una salida sin un producto asociado
         Product product = productRepository.findById(dto.getId_product())
-            .orElseThrow(() -> new RuntimeException("Product not found"));
+            .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
         exit.setProduct(product);
 
         //Relacion obligatoria con User porque no se puede crear una salida sin un usuario asociado
         User user = userRepository.findById(dto.getId_user())
-            .orElseThrow(() -> new RuntimeException("User not found"));
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
         exit.setUser(user);
 
         //Relacion obligatoria con Reason porque no se puede crear una salida sin una razón asociada
         Reason reason = reasonRepository.findById(dto.getId_reason())
-            .orElseThrow(() -> new RuntimeException("Reason not found"));
+            .orElseThrow(() -> new RuntimeException("Motivo no encontrado"));
         exit.setReason(reason);
        
         return exit;
@@ -97,7 +97,7 @@ public class ExitService {
     //Listar una salida por id
     public ExitResponseDTO getExitById(Long id) {
         Exit exit = exitRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Exit not found"));
+                .orElseThrow(() -> new RuntimeException("Salida no encontrada"));
         return toDTO(exit);
     }
 

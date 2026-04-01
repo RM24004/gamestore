@@ -1,5 +1,6 @@
 package com.gamerstore.gamerstore.controller;
 import com.gamerstore.gamerstore.dto.ExitResponseDTO;
+import com.gamerstore.gamerstore.dto.ApiResponse;
 import com.gamerstore.gamerstore.dto.ExitRequestDTO;
 import com.gamerstore.gamerstore.service.ExitService;
 import org.springframework.http.ResponseEntity;
@@ -32,9 +33,9 @@ public class ExitController {
 
     //Crear
     @PostMapping
-    public ResponseEntity<ExitResponseDTO> save(@Valid @RequestBody ExitRequestDTO dto) {
-        ExitResponseDTO savedExit = exitService.createExit(dto);
-        return new ResponseEntity<>(savedExit, HttpStatus.CREATED);
+    public ResponseEntity<ApiResponse> save(@Valid @RequestBody ExitRequestDTO dto) {
+        exitService.createExit(dto);
+        return ResponseEntity.ok(new ApiResponse("Salida creada con exito"));
     }
     //Actualizar
     /*

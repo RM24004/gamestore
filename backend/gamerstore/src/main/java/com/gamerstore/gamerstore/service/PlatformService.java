@@ -47,14 +47,14 @@ public class PlatformService {
     //Buscar por ID
     public PlatformResponseDTO findById(Long id) {
         Platform platform = platformRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Platform not found"));
+                .orElseThrow(() -> new RuntimeException("Plataform no Encontrada"));
         return toDTO(platform);
     }
     
     //Actualizar
     public PlatformResponseDTO update(Long id, PlatformRequestDTO dto) {
         Platform platform = platformRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Platform not found"));
+                .orElseThrow(() -> new RuntimeException("Plataform no Encontrada"));
 
         platform.setName(dto.getName());
         platform.setDescription(dto.getDescription());
@@ -65,7 +65,7 @@ public class PlatformService {
     //Eliminar
     public void delete(Long id) {
         Platform platform = platformRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Platform not found"));
+                .orElseThrow(() -> new RuntimeException("Plataform no Encontrada"));
         platformRepository.delete(platform);
     }
 }

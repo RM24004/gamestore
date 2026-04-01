@@ -49,14 +49,14 @@ public class CategoryService {
     //Buscar por ID
     public CategoryResponseDTO findById(Long id) {
         Category c = categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+                .orElseThrow(() -> new RuntimeException("Categoria no encontrada"));
         return toDTO(c);
     }
 
     //Actualizar
     public CategoryResponseDTO update(Long id, CategoryRequestDTO dto) {
         Category c = categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+                .orElseThrow(() -> new RuntimeException("Categoria no encontrada"));
 
         c.setName(dto.getName());
         c.setDescription(dto.getDescription());
@@ -67,7 +67,7 @@ public class CategoryService {
     //Eliminar
     public void delete(Long id) {
         if (!categoryRepository.existsById(id)) {
-            throw new RuntimeException("Category not found");
+            throw new RuntimeException("Categoria no encontrada");
         }
         categoryRepository.deleteById(id);
     }

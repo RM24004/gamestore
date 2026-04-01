@@ -1,5 +1,6 @@
 package com.gamerstore.gamerstore.controller;
 
+import com.gamerstore.gamerstore.dto.ApiResponse;
 import com.gamerstore.gamerstore.dto.CategoryRequestDTO;
 import com.gamerstore.gamerstore.dto.CategoryResponseDTO;
 import com.gamerstore.gamerstore.service.CategoryService;
@@ -36,23 +37,23 @@ public class CategoryController {
 
     //CREATE
     @PostMapping
-    public ResponseEntity<CategoryResponseDTO> save(@Valid @RequestBody CategoryRequestDTO dto) {
-        CategoryResponseDTO savedCategory = categoryService.save(dto);
-        return new ResponseEntity<>(savedCategory, HttpStatus.CREATED);
+    public ResponseEntity<ApiResponse> save(@Valid @RequestBody CategoryRequestDTO dto) {
+        categoryService.save(dto);
+        return ResponseEntity.ok(new ApiResponse("Categoria Creada con Exito"));
     }
 
     //UPDATE
     @PutMapping("/{id}")
-    public ResponseEntity<CategoryResponseDTO> update(@PathVariable Long id, @Valid @RequestBody CategoryRequestDTO dto) {
-        CategoryResponseDTO updatedCategory = categoryService.update(id, dto);
-        return new ResponseEntity<>(updatedCategory, HttpStatus.OK);
+    public ResponseEntity<ApiResponse> update(@PathVariable Long id, @Valid @RequestBody CategoryRequestDTO dto) {
+        categoryService.update(id, dto);
+        return ResponseEntity.ok(new ApiResponse("Categoria actualizada con exito"));
     }
 
     //DELETE
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse> delete(@PathVariable Long id) {
         categoryService.delete(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(new ApiResponse("Categoria eliminada con exito"));
     }
 }
 

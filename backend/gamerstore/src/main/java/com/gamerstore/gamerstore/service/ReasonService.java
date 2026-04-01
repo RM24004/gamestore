@@ -48,14 +48,14 @@ public class ReasonService {
     //Buscar por ID
     public ReasonResponseDTO findById(Long id) {
         Reason reason = reasonRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Reason not found"));
+                .orElseThrow(() -> new RuntimeException("Motivo no encontrado"));
         return toDTO(reason);
     }
 
     //Actualizar
     public ReasonResponseDTO update(Long id, ReasonRequestDTO dto) {
         Reason reason = reasonRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Reason not found"));
+                .orElseThrow(() -> new RuntimeException("Motivo no encontrado"));
 
         reason.setName(dto.getName());
         reason.setDescription(dto.getDescription());
@@ -66,7 +66,7 @@ public class ReasonService {
     //Eliminar
     public void delete(Long id) {
         Reason reason = reasonRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Reason not found"));
+                .orElseThrow(() -> new RuntimeException("Motivo no encontrado"));
         reasonRepository.delete(reason);
     }
 }

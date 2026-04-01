@@ -1,4 +1,5 @@
 package com.gamerstore.gamerstore.controller;
+import com.gamerstore.gamerstore.dto.ApiResponse;
 import com.gamerstore.gamerstore.dto.BrandRequestDTO;
 import com.gamerstore.gamerstore.dto.BrandResponseDTO;
 import com.gamerstore.gamerstore.service.BrandService;
@@ -33,22 +34,22 @@ public class BrandController {
 
     //Crear
     @PostMapping
-    public ResponseEntity<BrandResponseDTO> save(@Valid @RequestBody BrandRequestDTO dto) {
-        BrandResponseDTO savedBrand = brandService.save(dto);
-        return new ResponseEntity<>(savedBrand, HttpStatus.CREATED);
+    public ResponseEntity<ApiResponse> save(@Valid @RequestBody BrandRequestDTO dto) {
+        brandService.save(dto);
+        return ResponseEntity.ok(new ApiResponse("Marca creado con exito"));
     }
 
     //Actualizar
     @PutMapping("/{id}")
-    public ResponseEntity<BrandResponseDTO> update(@PathVariable Long id, @Valid @RequestBody BrandRequestDTO dto) {
-        BrandResponseDTO updatedBrand = brandService.update(id, dto);
-        return new ResponseEntity<>(updatedBrand, HttpStatus.OK);
+    public ResponseEntity<ApiResponse> update(@PathVariable Long id, @Valid @RequestBody BrandRequestDTO dto) {
+        brandService.update(id, dto);
+        return ResponseEntity.ok(new ApiResponse("Marca actualizado con exito"));
     }
     
     //Eliminar
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse> delete(@PathVariable Long id) {
         brandService.delete(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(new ApiResponse("Marca eliminado con exito"));
     }
 }
