@@ -1,16 +1,17 @@
-//import { useState } from 'react'
-//import reactLogo from './assets/react.svg'
-//import viteLogo from './assets/vite.svg'
-//import heroImg from './assets/hero.png'
 import './App.css'
-
+import {Routes, Route} from "react-router-dom";
+import Login from './pages/Login';
+import Products from './pages/Products';
+import Entries from './pages/Entries';
+import Exits from './pages/Exits';
 function App() {
   return (
-    <div>
-      <h1>GamerStore</h1>
-      <p>Bienvenido al sistema</p>
-      <p>hola mundo soy victor</p>
-    </div>
+   <Routes>
+    <Route path='/' element={<Login />} />
+    <Route path='/products' element={<Products />} />
+    <Route path='/entries' element={<Entries />} />
+    <Route path='/exits' element={<Exits />} />
+   </Routes>
   );
 }
 
