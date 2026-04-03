@@ -1,6 +1,5 @@
 export async function fetchWithAuth(url, options = {}) {
   const token = localStorage.getItem("token");
-
   const response = await fetch(url, {
     ...options,
     headers: {
@@ -10,7 +9,7 @@ export async function fetchWithAuth(url, options = {}) {
     }
   });
 
-  // 🔥 manejo centralizado
+  //manejo centralizado
   if (response.status === 401 || response.status === 403) {
     localStorage.removeItem("token");
     window.location.href = "/";

@@ -1,15 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { createEntry } from "../services/entryService";
 import { useNavigate } from "react-router-dom";
+import { fetchWithAuth } from "../services/api";
 
 function CreateEntry() {
     const [productId, setProductId] = useState("");
+    const [products, setProducts] = useState([]);
+
     const [quantity, setQuantity] = useState("");
     const [unitCost, setUnitCost] = useState("");
+
+    const userId=localStorage.getItem("userId");
+    const userEmail = localStorage.getItem("email");
     
     const navigate = useNavigate();
-
+    useEffect(() => {
+        fetchWithAuth("http://localhost:8080/products").then(setProducts);
+    },[]);
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -18,7 +27,7 @@ function CreateEntry() {
                 quantity: Number(quantity),
                 unit_cost: Number(unitCost),
                 id_product: Number(productId),
-                id_user: 1
+                id_user: Number(userId)
             };
             console.log("Enviando", JSON.stringify(entry));
             await createEntry(entry);
@@ -35,12 +44,25 @@ function CreateEntry() {
             <Navbar />
             <h2>Registrar Entrada</h2>
             <form onSubmit={handleSubmit}>
-                <input
-                    type="number"
-                    placeholder="ID Producto"
-                    value={productId}
-                    onChange={(e) => setProductId(e.target.value)}
+                
+                <div style={{ marginBottom: "10px" }}>
+                <label>Usuario: </label>
+                <input 
+                    type="text" 
+                    value={userEmail || ""}  
+                    disabled 
+                    style={{ backgroundColor: "#eee" }}
                 />
+                </div>
+
+                <select onChange={(e) => setProductId(e.target.value)}>
+                <option value="">Seleccione Producto</option>
+                {products.map(c => (
+                <option key={c.id} value={c.id}>
+                {c.name}
+                </option>
+                ))}
+                </select>
 
                 <input
                     type="number"

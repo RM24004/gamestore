@@ -12,3 +12,9 @@ console.log("Enviando:", JSON.stringify(product));
         body: JSON.stringify(product)
     });     
 }
+
+export async function deleteProducts(id) {
+    return await fetchWithAuth(`http://localhost:8080/products/${id}`, {
+        method: "DELETE"
+    });
+}

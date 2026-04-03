@@ -1,19 +1,26 @@
 import { useState } from "react";
 import { login } from "../services/authService";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 function Login() {
   const navigate=useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
-
   const handleLogin = async () => {
     try {
         const data = await login(email, password);
+        const decoded = jwtDecode(data.token);
+        
+        console.log("Decodificado:", decoded);
+        console.log("Keys:", Object.keys(decoded));
+        console.log(decoded);
         console.log("TOKEN: ",data.token)
 
         localStorage.setItem("token", data.token);
+        localStorage.setItem("email", decoded.sub);
+        localStorage.setItem("userId", decoded.userId);
+        localStorage.setItem("role", decoded.role);
         alert("Login exitoso")
         navigate("/products")
     } catch (error) {

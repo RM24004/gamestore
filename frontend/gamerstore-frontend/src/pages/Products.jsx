@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { getProducts } from "../services/productService";
+import { getProducts, deleteProducts } from "../services/productService";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
+
 
 function Products (){
     const navigate = useNavigate();
@@ -31,6 +32,27 @@ function Products (){
         localStorage.removeItem("token");
         navigate("/");
     }
+
+    const handleDelete = async (id) => {
+        if (!window.confirm("¿Seguro que desea eliminar este producto?")){
+            return;
+        }
+try {
+    await deleteProducts(id);
+    alert("Producto Eliminado");
+    //refrescar la lista
+    const data = await getProducts();
+    setProducts(data);
+    }       
+    catch (error) {
+        console.error(error);
+        alert("Error al eliminar producto");
+    }
+
+
+    }
+
+
 return (
     <>
         <Navbar />
@@ -57,8 +79,16 @@ return (
                     <p>Stock: {p.current_stock}</p>
                     <p>Categoría: {p.categoryName}</p>
                     <p>Marca: {p.brandName}</p>
-                    <p>Plataforma: {p.platform_id}</p>
-                    <p>Proveedor: {p.supplier_id}</p>
+                    <p>Plataforma: {p.platformName}</p>
+                    <p>Proveedor: {p.supplierName}</p>
+                    <p>Descripcion: {p.description}</p>
+                    {p.image_url && <img src={p.image_url} alt={p.name} width="100" />}
+                    <button onClick={() => handleDelete(p.id)}>
+                        Eliminar
+                    </button>
+                     <button onClick={() => navigate(`/products/edit/${p.id}`)}>
+                        Editar
+                    </button>
                 </div>)
             ))}
             </div>

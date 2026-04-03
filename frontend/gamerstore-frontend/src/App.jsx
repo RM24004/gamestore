@@ -7,6 +7,7 @@ import Exits from './pages/Exits';
 import CreateProduct from './pages/CreateProduct';
 import CreateEntry from './pages/CreateEntry';
 import CreateExit from './pages/CreateExit';
+import EditProduct from './pages/EditProduct';
 function App() {
   return (
    <Routes>
@@ -17,6 +18,7 @@ function App() {
     <Route path='/create-product' element={<CreateProduct />} />
     <Route path='/create-entries' element={<CreateEntry />} />
     <Route path='/create-exits' element={<CreateExit />} />
+    <Route path='/products/edit/:id' element={<EditProduct />} />
    </Routes>
   );
 }
