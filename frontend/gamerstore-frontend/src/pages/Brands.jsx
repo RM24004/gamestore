@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import { getProducts, deleteProduct } from "../services/productService";
+import { getBrands, deleteBrand } from "../services/brandService";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
-
-function Products (){
+function Brands (){
     const navigate = useNavigate();
-    const [products, setProducts]=useState([]);
+    const [brands, setBrands]=useState([]);
 
     useEffect(()=>{
         const token = localStorage.getItem("token");
@@ -17,57 +16,52 @@ function Products (){
 
         async function fetchData(){
             try {
-                const data = await getProducts();
-                setProducts(data);
+                const data = await getBrands();
+                setBrands(data);
             } catch (error) {
                 console.error(error);
-                alert("Error al cargar productos");
+                alert("Error al cargar marcas");
             }
         }
         fetchData();
-
     }, []);
-
     const handleLogout = () => {
         localStorage.removeItem("token");
         navigate("/");
     }
 
     const handleDelete = async (id) => {
-        if (!window.confirm("¿Seguro que desea eliminar este producto?")){
+        if (!window.confirm("¿Seguro que desea eliminar esta marca?")){
             return;
         }
-try {
-    await deleteProduct(id);
-    alert("Producto Eliminado");
-    //refrescar la lista
-    const data = await getProducts();
-    setProducts(data);
-    }       
-    catch (error) {
-        console.error(error);
-        alert("Error al eliminar producto");
-    }
-
-
-    }
-
-
-return (
-    <>
+        try {
+            await deleteBrand(id);
+            alert("Marca Eliminada");
+            //refrescar la lista
+            const data = await getBrands();
+            setBrands(data);
+            }       
+            catch (error) {
+                console.error(error);
+                alert("Error al eliminar marca");
+            }
+        }
+    return (
+        <>
         <Navbar />
         <div>
-            <h1>Productos en el inventario</h1>
+            <h1>Marcas del Inventario
+            </h1>
             <div style={{ 
                 display: "grid",
                 gridTemplateColumns:"repeat(3, 1fr)",
                 gap: "15px",
                 padding: "10px"
             }}>
-                 {products.length === 0 ? (
-                    <p>No hay salidas registradas</p>
+                 {brands.length === 0 ? (
+                    <p>No hay marcas registradas</p>
                 ) : (
-             products.map(p => (
+             brands.map(p => (
                 <div key={p.id} style={{
                     border: "1px solid #ccc",
                     borderRadius: "10px",
@@ -75,18 +69,11 @@ return (
                     boxShadow: "2px 2px 5px rgba(0,0,0,0.1)"
                 }}>
                     <p>Nombre: {p.name}</p>
-                    <p>Precio: ${p.price}</p>
-                    <p>Stock: {p.current_stock}</p>
-                    <p>Categoría: {p.categoryName}</p>
-                    <p>Marca: {p.brandName}</p>
-                    <p>Plataforma: {p.platformName}</p>
-                    <p>Proveedor: {p.supplierName}</p>
                     <p>Descripcion: {p.description}</p>
-                    {p.image_url && <img src={p.image_url} alt={p.name} width="100" />}
                     <button onClick={() => handleDelete(p.id)}>
                         Eliminar
                     </button>
-                     <button onClick={() => navigate(`/products/edit/${p.id}`)}>
+                     <button onClick={() => navigate(`/brands/edit/${p.id}`)}>
                         Editar
                     </button>
                 </div>)
@@ -97,4 +84,4 @@ return (
     </>
     );
 }
-export default Products
+export default Brands

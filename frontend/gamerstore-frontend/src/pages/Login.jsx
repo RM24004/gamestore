@@ -47,9 +47,8 @@ function Login() {
         />
         <br />
         <button onClick={handleLogin}>Iniciar Session</button>
-        
-        </div>
+        <button onClick={() => navigate("/register")}>Crear Cuenta</button>
+        </div>  
   )
 }
-
 export default Login;
