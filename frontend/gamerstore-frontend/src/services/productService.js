@@ -1,6 +1,14 @@
 import { fetchWithAuth } from "./api";
 
 export async function getProducts() {
-    const response = await fetchWithAuth("http://localhost:8080/products");
-    return await response.json();
+    const data = await fetchWithAuth("http://localhost:8080/products");
+    return data;
+}
+
+export async function createProduct(product) {
+console.log("Enviando:", JSON.stringify(product));
+  return await fetchWithAuth("http://localhost:8080/products", {
+        method: "POST",
+        body: JSON.stringify(product)
+    });     
 }

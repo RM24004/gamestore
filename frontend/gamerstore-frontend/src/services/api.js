@@ -14,12 +14,12 @@ export async function fetchWithAuth(url, options = {}) {
   if (response.status === 401 || response.status === 403) {
     localStorage.removeItem("token");
     window.location.href = "/";
-    return;
+    throw new Error("Sesión expirada");
   }
 
   if (!response.ok) {
-    throw new Error("Error en la petición");
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.error || `Error: ${response.status}`);
   }
-
-  return response;
+  return response.json();
 }
