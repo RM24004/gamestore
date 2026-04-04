@@ -11,6 +11,7 @@ public class ProductResponseDTO {
     private Double price;
     private Integer current_stock;
     private String image_url;
+    private String description;
     
     private String brandName; //Nombres en lugar de los IDs para una mejor comprensión en la respuesta
     private String categoryName; 

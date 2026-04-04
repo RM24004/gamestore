@@ -63,14 +63,18 @@ private Entry toEntity(EntryRequestDTO dto) {
 
     //Crear
     public EntryResponseDTO createEntry(EntryRequestDTO dto) {
-        Entry entry = toEntity(dto);
-        Product product = entry.getProduct();
-        
-        //Actualizar el stock del producto al crear una nueva entrada
-        product.setCurrent_stock(product.getCurrent_stock() + entry.getQuantity());
-        productRepository.save(product);
-        entry.setId(null);
-        return toDTO(entryRepository.save(entry));
+          Entry entry = toEntity(dto);
+    System.out.println("Entry antes de guardar - unit_cost: " + entry.getUnit_cost());
+    
+    Product product = entry.getProduct();
+    product.setCurrent_stock(product.getCurrent_stock() + entry.getQuantity());
+    productRepository.save(product);
+    
+    entry.setId(null);
+    Entry saved = entryRepository.save(entry);
+    System.out.println("Entry guardado - unit_cost: " + saved.getUnit_cost());
+    
+    return toDTO(saved);
     }
 
     //Listar todos los registros

@@ -25,17 +25,21 @@ public class ProductRequestDTO {
         @Size(max = 255)
         @URL(message = "La URL de la imagen no es válida")
         private String image_url;
+
+        @Size(max = 255)
+        //@URL(message = "Debe de agregar una descripcion")
+        private String description;
         
-        @NotNull(message = "El ID del marca es obligatorio")
+        //@NotNull(message = "El ID del marca es obligatorio")
         private Long brand_id;
 
-        @NotNull(message = "El ID de la categoría es obligatorio")
+        //@NotNull(message = "El ID de la categoría es obligatorio")
         private Long category_id;
 
-        @NotNull(message = "El ID de la plataforma es obligatorio")
+        //@NotNull(message = "El ID de la plataforma es obligatorio")
         private Long platform_id;
 
-        @NotNull(message = "El ID del proveedor es obligatorio")
+        //@NotNull(message = "El ID del proveedor es obligatorio")
         private Long supplier_id;
 
 }

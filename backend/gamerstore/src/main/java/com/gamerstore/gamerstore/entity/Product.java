@@ -31,6 +31,9 @@ public class Product {
     @Size(max = 255)
     private String image_url;
 
+    @Size(max = 255)
+    private String description;
+
     //Relaciones con otras entidades
     @ManyToOne
     @JoinColumn(name = "brand_id", nullable = false) // Asegura que cada producto tenga una marca asignada

@@ -53,6 +53,7 @@ public class ProductService {
         dto.setImage_url(prod.getImage_url());
         dto.setPrice(prod.getPrice());
         dto.setCurrent_stock(prod.getCurrent_stock() != null ? prod.getCurrent_stock() : 0); //Asegura que current_stock no sea nulo
+        dto.setDescription(prod.getDescription());
 
         if (prod.getBrand() != null) {
             dto.setBrandName(prod.getBrand().getName());
@@ -106,7 +107,7 @@ public class ProductService {
         prod.setPrice(dto.getPrice());
         prod.setCurrent_stock(dto.getCurrent_stock());
         prod.setImage_url(dto.getImage_url());
-
+        prod.setDescription(dto.getDescription());
         setRelations(prod, dto);
         return prod;
     }

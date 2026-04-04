@@ -25,7 +25,7 @@ public class AuthService {
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new RuntimeException("Contraseña incorrecta");
         }
-        String token = jwtUtil.generateToken(user.getEmail(), user.getRole().getName());
+        String token = jwtUtil.generateToken(user.getEmail(), user.getRole().getName(), user.getId());
         return new AuthResponse(token);
     }
 }
