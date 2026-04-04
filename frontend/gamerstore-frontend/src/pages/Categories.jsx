@@ -3,85 +3,96 @@ import { getCategories, deleteCategory } from "../services/categoryServices";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
-function Categories (){
+function Categories() {
     const navigate = useNavigate();
-    const [categories, setCategories]=useState([]);
+    const [categories, setCategories] = useState([]);
 
-    useEffect(()=>{
+    useEffect(() => {
         const token = localStorage.getItem("token");
-        if (!token){
+        if (!token) {
             navigate("/");
             return;
         }
 
-        async function fetchData(){
+        async function fetchData() {
             try {
                 const data = await getCategories();
                 setCategories(data);
             } catch (error) {
                 console.error(error);
-                alert("Error al cargar categorias");
+                alert("Error al cargar categorías");
             }
         }
         fetchData();
     }, []);
-    const handleLogout = () => {
-        localStorage.removeItem("token");
-        navigate("/");
-    }
 
     const handleDelete = async (id) => {
-        if (!window.confirm("¿Seguro que desea eliminar esta categoria?")){
+        if (!window.confirm("¿Seguro que desea eliminar esta categoría?")) {
             return;
         }
         try {
             await deleteCategory(id);
-            alert("Categoria Eliminada");
-            //refrescar la lista
-            const data = await getCategories();
-            setCategories(data);
-            }       
-            catch (error) {
-                console.error(error);
-                alert("Error al eliminar la categoria");
-            }
+            alert("Categoría eliminada");
+            setCategories(categories.filter(c => c.id !== id));
+        } catch (error) {
+            console.error(error);
+            alert("Error al eliminar categoría");
         }
-        return (
+    };
+
+    return (
         <>
-        <Navbar />
-        <div>
-            <h1>Categorias del Inventario
-            </h1>
-            <div style={{ 
-                display: "grid",
-                gridTemplateColumns:"repeat(3, 1fr)",
-                gap: "15px",
-                padding: "10px"
-            }}>
-                 {categories.length === 0 ? (
-                    <p>No hay categorias registradas</p>
+            <Navbar />
+            <div className="container mt-4">
+                <div className="d-flex justify-content-between align-items-center mb-4">
+                    <h2 className="text-primary">Categorías del Inventario</h2>
+                    <button 
+                        className="btn btn-success"
+                        onClick={() => navigate("/create-category")}
+                    >
+                        + Nueva Categoría
+                    </button>
+                </div>
+
+                {categories.length === 0 ? (
+                    <div className="alert alert-info text-center">
+                        No hay categorías registradas
+                    </div>
                 ) : (
-                categories.map(p => (
-                <div key={p.id} style={{
-                    border: "1px solid #ccc",
-                    borderRadius: "10px",
-                    padding: "10px",
-                    boxShadow: "2px 2px 5px rgba(0,0,0,0.1)"
-                }}>
-                    <p>Nombre: {p.name}</p>
-                    <p>Descripcion: {p.description}</p>
-                    <button onClick={() => handleDelete(p.id)}>
-                        Eliminar
-                    </button>
-                     <button onClick={() => navigate(`/categories/edit/${p.id}`)}>
-                        Editar
-                    </button>
-                </div>)
-            ))}
+                    <div className="row row-cols-1 row-cols-md-3 g-4">
+                        {categories.map(c => (
+                            <div key={c.id} className="col">
+                                <div className="card h-100 shadow-sm">
+                                    <div className="card-body">
+                                        <h5 className="card-title text-primary">{c.name}</h5>
+                                        <p className="card-text">
+                                            {c.description || "Sin descripción"}
+                                        </p>
+                                    </div>
+                                    <div className="card-footer bg-white border-top-0">
+                                        <div className="d-flex gap-2">
+                                            <button 
+                                                className="btn btn-primary btn-sm flex-grow-1"
+                                                onClick={() => navigate(`/categories/edit/${c.id}`)}
+                                            >
+                                                Editar
+                                            </button>
+                                            <button 
+                                                className="btn btn-danger btn-sm flex-grow-1"
+                                                onClick={() => handleDelete(c.id)}
+                                            >
+                                                Eliminar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
-        </div>
-        <button onClick={handleLogout}>Cerrar Sesion</button>
-    </>
+        </>
     );
 }
-export default Categories
+
+export default Categories;

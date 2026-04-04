@@ -3,89 +3,96 @@ import { getUsers, deleteUser } from "../services/userService";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
-function Users (){
+function Users() {
     const navigate = useNavigate();
-    const [users, setUsers]=useState([]);
+    const [users, setUsers] = useState([]);
 
-    useEffect(()=>{
-         const token = localStorage.getItem("token");
-    if (!token) {
-        navigate("/");
-        return;
-    }
-
-    async function fetchData() {
-        try {
-            const data = await getUsers();
-            // Filtrar solo usuarios con rol USER
-            const filteredUsers = data.filter(user => user.roleName === "USER");
-            setUsers(filteredUsers);
-        } catch (error) {
-            console.error(error);
-            alert("Error al cargar usuarios");
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            navigate("/");
+            return;
         }
-    }
-    fetchData();
 
+        async function fetchData() {
+            try {
+                const data = await getUsers();
+                const filteredUsers = data.filter(user => user.roleName === "USER");
+                setUsers(filteredUsers);
+            } catch (error) {
+                console.error(error);
+                alert("Error al cargar usuarios");
+            }
+        }
+        fetchData();
     }, []);
 
-    const handleLogout = () => {
-        localStorage.removeItem("token");
-        navigate("/");
-    }
+    const handleDelete = async (id) => {
+        if (!window.confirm("¿Seguro que desea eliminar este usuario?")) {
+            return;
+        }
+        try {
+            await deleteUser(id);
+            alert("Usuario eliminado");
+            setUsers(users.filter(u => u.id !== id));
+        } catch (error) {
+            console.error(error);
+            alert("Error al eliminar usuario");
+        }
+    };
 
-   const handleDelete = async (id) => {
-    if (!window.confirm("¿Seguro que desea eliminar este usuario?")) {
-        return;
-    }
-    try {
-        await deleteUser(id);
-        alert("Usuario eliminado");
-        // Filtrar localmente en vez de recargar
-        setUsers(users.filter(user => user.id !== id));
-    } catch (error) {
-        console.error(error);
-        alert("Error al eliminar usuario");
-    }
-}
-return (
-    <>
-        <Navbar />
-        <div>
-            <h1>Usuarios del Inventario</h1>
-            <div style={{ 
-                display: "grid",
-                gridTemplateColumns:"repeat(3, 1fr)",
-                gap: "15px",
-                padding: "10px"
-            }}>
-                 {users.length === 0 ? (
-                    <p>No hay salidas registradas</p>
+    return (
+        <>
+            <Navbar />
+            <div className="container mt-4">
+                <h2 className="text-primary mb-4">Usuarios del Inventario</h2>
+
+                {users.length === 0 ? (
+                    <div className="alert alert-info text-center">
+                        No hay usuarios registrados
+                    </div>
                 ) : (
-                users.map(p => (
-                <div key={p.id} style={{
-                    border: "1px solid #ccc",
-                    borderRadius: "10px",
-                    padding: "10px",
-                    boxShadow: "2px 2px 5px rgba(0,0,0,0.1)"
-                }}>
-
-                    <p>Nombre: {p.name}</p>
-                    <p>Telefono: {p.phone}</p>
-                    <p>E-mail: {p.email}</p>
-                    <p>Role: {p.roleName}</p>
-                    <button onClick={() => handleDelete(p.id)}>
-                        Eliminar
-                    </button>
-                     <button onClick={() => navigate(`/suppliers/edit/${p.id}`)}>
-                        Editar
-                    </button>
-                </div>)
-            ))}
+                    <div className="table-responsive">
+                        <table className="table table-striped table-hover table-bordered">
+                            <thead className="table-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Teléfono</th>
+                                    <th>Email</th>
+                                    <th>Rol</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {users.map(u => (
+                                    <tr key={u.id}>
+                                        <td>{u.id}</td>
+                                        <td>{u.name}</td>
+                                        <td>{u.phone || "N/A"}</td>
+                                        <td>{u.email}</td>
+                                        <td>
+                                            <span className="badge bg-primary">
+                                                {u.roleName}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <button 
+                                                className="btn btn-danger btn-sm"
+                                                onClick={() => handleDelete(u.id)}
+                                            >
+                                                Eliminar
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
             </div>
-        </div>
-        <button onClick={handleLogout}>Cerrar Sesion</button>
-    </>
+        </>
     );
 }
-export default Users
+
+export default Users;

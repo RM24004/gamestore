@@ -3,18 +3,18 @@ import { getBrands, deleteBrand } from "../services/brandService";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
-function Brands (){
+function Brands() {
     const navigate = useNavigate();
-    const [brands, setBrands]=useState([]);
+    const [brands, setBrands] = useState([]);
 
-    useEffect(()=>{
+    useEffect(() => {
         const token = localStorage.getItem("token");
-        if (!token){
+        if (!token) {
             navigate("/");
             return;
         }
 
-        async function fetchData(){
+        async function fetchData() {
             try {
                 const data = await getBrands();
                 setBrands(data);
@@ -25,63 +25,74 @@ function Brands (){
         }
         fetchData();
     }, []);
-    const handleLogout = () => {
-        localStorage.removeItem("token");
-        navigate("/");
-    }
 
     const handleDelete = async (id) => {
-        if (!window.confirm("¿Seguro que desea eliminar esta marca?")){
+        if (!window.confirm("¿Seguro que desea eliminar esta marca?")) {
             return;
         }
         try {
             await deleteBrand(id);
-            alert("Marca Eliminada");
-            //refrescar la lista
-            const data = await getBrands();
-            setBrands(data);
-            }       
-            catch (error) {
-                console.error(error);
-                alert("Error al eliminar marca");
-            }
+            alert("Marca eliminada");
+            setBrands(brands.filter(b => b.id !== id));
+        } catch (error) {
+            console.error(error);
+            alert("Error al eliminar marca");
         }
+    };
+
     return (
         <>
-        <Navbar />
-        <div>
-            <h1>Marcas del Inventario
-            </h1>
-            <div style={{ 
-                display: "grid",
-                gridTemplateColumns:"repeat(3, 1fr)",
-                gap: "15px",
-                padding: "10px"
-            }}>
-                 {brands.length === 0 ? (
-                    <p>No hay marcas registradas</p>
+            <Navbar />
+            <div className="container mt-4">
+                <div className="d-flex justify-content-between align-items-center mb-4">
+                    <h2 className="text-primary">Marcas del Inventario</h2>
+                    <button 
+                        className="btn btn-success"
+                        onClick={() => navigate("/create-brand")}
+                    >
+                        + Nueva Marca
+                    </button>
+                </div>
+
+                {brands.length === 0 ? (
+                    <div className="alert alert-info text-center">
+                        No hay marcas registradas
+                    </div>
                 ) : (
-             brands.map(p => (
-                <div key={p.id} style={{
-                    border: "1px solid #ccc",
-                    borderRadius: "10px",
-                    padding: "10px",
-                    boxShadow: "2px 2px 5px rgba(0,0,0,0.1)"
-                }}>
-                    <p>Nombre: {p.name}</p>
-                    <p>Descripcion: {p.description}</p>
-                    <button onClick={() => handleDelete(p.id)}>
-                        Eliminar
-                    </button>
-                     <button onClick={() => navigate(`/brands/edit/${p.id}`)}>
-                        Editar
-                    </button>
-                </div>)
-            ))}
+                    <div className="row row-cols-1 row-cols-md-3 g-4">
+                        {brands.map(b => (
+                            <div key={b.id} className="col">
+                                <div className="card h-100 shadow-sm">
+                                    <div className="card-body">
+                                        <h5 className="card-title text-primary">{b.name}</h5>
+                                        <p className="card-text">
+                                            {b.description || "Sin descripción"}
+                                        </p>
+                                    </div>
+                                    <div className="card-footer bg-white border-top-0">
+                                        <div className="d-flex gap-2">
+                                            <button 
+                                                className="btn btn-primary btn-sm flex-grow-1"
+                                                onClick={() => navigate(`/brands/edit/${b.id}`)}
+                                            >
+                                                Editar
+                                            </button>
+                                            <button 
+                                                className="btn btn-danger btn-sm flex-grow-1"
+                                                onClick={() => handleDelete(b.id)}
+                                            >
+                                                Eliminar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
-        </div>
-        <button onClick={handleLogout}>Cerrar Sesion</button>
-    </>
+        </>
     );
 }
-export default Brands
+
+export default Brands;

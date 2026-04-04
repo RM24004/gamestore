@@ -1,49 +1,76 @@
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { getExits } from "../services/exitService";
+import { useNavigate } from "react-router-dom";
 
-function Entries(){
+function Exits() {
+    const navigate = useNavigate();
     const [exits, setExits] = useState([]);
 
-    useEffect(()=> {
+    useEffect(() => {
         async function fetchData() {
-            try{
+            try {
                 const data = await getExits();
                 setExits(data);
-            }catch(error){
+            } catch (error) {
                 console.error(error);
+                alert("Error al cargar salidas");
             }
         }
         fetchData();
-    },[]);
+    }, []);
+
     return (
         <>
-        <Navbar />
-            <h1>Salidas de Productos</h1>
-            <div style={{ 
-                display: "grid",
-                gridTemplateColumns:"repeat(3, 1fr)",
-                gap: "15px",
-                padding: "10px"
-            }}>
-                 {exits.length === 0 ? (
-                    <p>No hay salidas registradas</p>
+            <Navbar />
+            <div className="container mt-4">
+                <div className="d-flex justify-content-between align-items-center mb-4">
+                    <h2 className="text-primary">Salidas de Productos</h2>
+                    <button 
+                        className="btn btn-success"
+                        onClick={() => navigate("/create-exits")}
+                    >
+                        + Nueva Salida
+                    </button>
+                </div>
+
+                {exits.length === 0 ? (
+                    <div className="alert alert-info text-center">
+                        No hay salidas registradas
+                    </div>
                 ) : (
-                    exits.map(e => (
-                        <div key={e.id} style={{
-                            border: "1px solid #ccc",
-                            borderRadius: "10px",
-                            padding: "10px"}}>
-                            <h3>{e.productName}</h3>
-                            <p>Cantidad: {e.quantity}</p>
-                            <p>Fecha: {e.exit_date}</p>
-                            <p>Razon: {e.reasonName}</p>
-                            <p>Usuario: {e.userName}</p></div>
-                            ))
-                        )}
+                    <div className="table-responsive">
+                        <table className="table table-striped table-hover table-bordered">
+                            <thead className="table-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Fecha</th>
+                                    <th>Razón</th>
+                                    <th>Usuario</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {exits.map(e => (
+                                    <tr key={e.id}>
+                                        <td>{e.id}</td>
+                                        <td>{e.productName || "N/A"}</td>
+                                        <td>
+                                            <span className="badge bg-danger">{e.quantity}</span>
+                                        </td>
+                                        <td>{e.exit_date}</td>
+                                        <td>{e.reasonName || "N/A"}</td>
+                                        <td>{e.username || "N/A"}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
             </div>
         </>
     );
 }
 
-export default Entries;
+export default Exits;
