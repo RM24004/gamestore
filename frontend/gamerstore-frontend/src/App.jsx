@@ -21,12 +21,16 @@ import CreateSupplier from './pages/CreateSupplier';
 import EditSupplier from './pages/EditSupplier';
 import Users from './pages/Users';
 import Register from './pages/Register';
+import Reasons from './pages/Reasons';
+import CreateReason from './pages/CreateReason';
+import Countries from './pages/Countries';
+import CreateCountry from './pages/CreateCountry';
 function App() {
   return (
    <Routes>
     
     <Route path='/' element={<Login />} />
-
+    <Route path='/countries' element={<Countries />} />
     <Route path='/products' element={<Products />} />
     <Route path='/entries' element={<Entries />} />
     <Route path='/exits' element={<Exits />} />
@@ -35,6 +39,7 @@ function App() {
     <Route path='/categories' element={<Categories />} />
     <Route path='/suppliers' element={<Suppliers />} />
     <Route path='/users' element={<Users />} />
+    <Route path='/reasons' element={<Reasons />} />
     <Route path='/register' element={<Register />} />
     <Route path='/login' element={<Login />} />
 
@@ -45,6 +50,8 @@ function App() {
     <Route path='/create-category' element={<CreateCategory />} />
     <Route path='/create-platform' element={<CreatePlatform />} />
     <Route path='/create-supplier' element={<CreateSupplier />} />
+    <Route path='/create-reason' element={<CreateReason />} />
+    <Route path='/create-country' element={<CreateCountry />} />
 
     <Route path='/products/edit/:id' element={<EditProduct />} />
     <Route path='/brands/edit/:id' element={<EditBrand />} />
